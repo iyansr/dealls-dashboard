@@ -16,7 +16,7 @@ import {
 
 import useQueryProducts from '../hooks/useQueryProducts';
 import columns from '../components/column';
-import { Input } from '@/components/ui/input';
+import TableToolbar from '../components/TableToolbar';
 
 const ProductPage = () => {
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
@@ -27,16 +27,17 @@ const ProductPage = () => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const { data, isLoading } = useQueryProducts({
-    limit: pageSize,
-    skip: pageIndex,
+    pageSize,
+    pageNumber: pageIndex,
     sort: sorting,
     q: (columnFilters.find(filter => filter.id === 'title')?.value ?? '') as string,
+    categories: (columnFilters.find(filter => filter.id === 'category')?.value ?? []) as string[],
   });
 
   const table = useReactTable<Product>({
     data: data?.products ?? [],
     columns,
-    pageCount: Math.ceil((data?.total ?? 0) / pageSize),
+    pageCount: data?.totalPages ?? 0,
     state: {
       pagination: {
         pageIndex,
@@ -65,16 +66,8 @@ const ProductPage = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-end mb-4">
-        <Input
-          placeholder="Search by product name"
-          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
-          onChange={event => table.getColumn('title')?.setFilterValue(event.target.value)}
-          className="h-8 w-[150px] lg:w-[250px]"
-        />
-      </div>
-
-      <TableInstance table={table} />
+      <TableToolbar table={table} />
+      <TableInstance table={table} columnLength={columns.length} />
       <DataTablePagination table={table} />
     </div>
   );

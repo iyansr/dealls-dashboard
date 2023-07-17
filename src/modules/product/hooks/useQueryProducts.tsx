@@ -1,7 +1,6 @@
 import { getAllProducts } from '@/api/product';
 import { RequestParams } from '@/types/request';
 import { useQuery } from '@tanstack/react-query';
-import { SortingState } from '@tanstack/react-table';
 
 const useQueryFetchProducts = () => {
   return useQuery(['products'], {
@@ -13,14 +12,13 @@ const useQueryFetchProducts = () => {
   });
 };
 
-const useQueryProducts = (params: RequestParams & { sort: SortingState }) => {
+const useQueryProducts = (params: RequestParams & { categories: string[] }) => {
   const { data } = useQueryFetchProducts();
 
   return useQuery(['products-filtered', params, data], {
     queryFn: async () => {
       const products = data?.products ?? [];
       const total = products.length;
-      const limit = params.limit ?? 0;
 
       const queriedProducts = products.filter(product => {
         const { q } = params;
@@ -55,12 +53,25 @@ const useQueryProducts = (params: RequestParams & { sort: SortingState }) => {
 
         return 0;
       });
-      const finalProducts = sortedProducts.slice(params.skip ?? 0, params.skip + (limit ?? 0));
+
+      const productByCategories = sortedProducts.filter(product => {
+        const { categories } = params;
+        if (!categories.length) {
+          return true;
+        }
+        return categories.includes(product.category);
+      });
+
+      const startIndex = params.pageNumber * params.pageSize;
+      const endIndex = startIndex + params.pageSize;
+      const totalPages = Math.ceil(productByCategories.length / params.pageSize);
+
+      const finalProducts = productByCategories.slice(startIndex, endIndex);
 
       return {
         products: finalProducts,
-        total,
-        limit,
+        total: productByCategories.length,
+        totalPages,
       };
     },
     keepPreviousData: true,

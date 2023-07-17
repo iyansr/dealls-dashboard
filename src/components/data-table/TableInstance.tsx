@@ -1,6 +1,6 @@
 'use client';
 
-import { flexRender, type Table as TansTable } from '@tanstack/react-table';
+import { ColumnDef, flexRender, type Table as TansTable } from '@tanstack/react-table';
 import React from 'react';
 import {
   Table,
@@ -13,17 +13,10 @@ import {
 
 type Props<T> = {
   table: TansTable<T>;
+  columnLength: number;
 };
 
-const TableInstance = <T extends Record<string, unknown>>({ table }: Props<T>) => {
-  if (table.getRowModel().rows.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center w-full h-full">
-        <span className="mt-4 text-gray-500">No data found</span>
-      </div>
-    );
-  }
-
+const TableInstance = <T extends Record<string, unknown>>({ table, columnLength }: Props<T>) => {
   return (
     <Table>
       <TableHeader>
@@ -43,21 +36,23 @@ const TableInstance = <T extends Record<string, unknown>>({ table }: Props<T>) =
       </TableHeader>
 
       <TableBody>
-        {table.getRowModel().rows.map(row => {
-          return (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map(cell => {
-                return (
-                  <TableCell
-                    key={cell.id}
-                    className={cell.column.id === 'action' ? 'sticky right-0 bg-white' : ''}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                );
-              })}
+        {table.getRowModel().rows?.length ? (
+          table.getRowModel().rows.map(row => (
+            <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+              {row.getVisibleCells().map(cell => (
+                <TableCell key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
             </TableRow>
-          );
-        })}
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={columnLength} className="h-24 text-center">
+              No results.
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );

@@ -16,3 +16,12 @@ export const getAllProducts: GetAllProducts = async () => {
 
   return response.data;
 };
+
+export const getAllProductCategory = async () => {
+  const response = await axios.request<string[]>({
+    method: 'GET',
+    url: '/products/categories',
+  });
+
+  return response.data;
+};
