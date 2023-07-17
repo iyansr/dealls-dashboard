@@ -7,6 +7,7 @@ import TableInstance from '@/components/data-table/TableInstance';
 import { DataTablePagination } from '@/components/data-table/TablePagination';
 import { Product } from '@/types/product';
 import {
+  ColumnFiltersState,
   PaginationState,
   SortingState,
   getCoreRowModel,
@@ -15,6 +16,7 @@ import {
 
 import useQueryProducts from '../hooks/useQueryProducts';
 import columns from '../components/column';
+import { Input } from '@/components/ui/input';
 
 const ProductPage = () => {
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
@@ -22,12 +24,13 @@ const ProductPage = () => {
     pageSize: 10,
   });
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const { data, isLoading } = useQueryProducts({
     limit: pageSize,
     skip: pageIndex,
     sort: sorting,
-    q: '',
+    q: (columnFilters.find(filter => filter.id === 'title')?.value ?? '') as string,
   });
 
   const table = useReactTable<Product>({
@@ -40,11 +43,14 @@ const ProductPage = () => {
         pageSize,
       },
       sorting,
+      columnFilters,
     },
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     manualPagination: true,
     manualSorting: true,
+    manualFiltering: true,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -59,6 +65,15 @@ const ProductPage = () => {
 
   return (
     <div>
+      <div className="flex items-center justify-end mb-4">
+        <Input
+          placeholder="Search by product name"
+          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+          onChange={event => table.getColumn('title')?.setFilterValue(event.target.value)}
+          className="h-8 w-[150px] lg:w-[250px]"
+        />
+      </div>
+
       <TableInstance table={table} />
       <DataTablePagination table={table} />
     </div>

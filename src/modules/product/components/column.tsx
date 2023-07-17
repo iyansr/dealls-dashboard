@@ -22,7 +22,7 @@ const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: 'category',
-    header: 'Category',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Category" />,
   },
 ];
 
