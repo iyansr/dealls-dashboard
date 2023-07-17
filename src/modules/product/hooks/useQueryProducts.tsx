@@ -18,8 +18,6 @@ const useQueryProducts = (params: RequestParams & { categories: string[]; brands
 
   const products = data?.products ?? [];
 
-  // const productBrand = [...new Set(products.map(product => product.brand))];
-
   const queriedProducts = products.filter(product => {
     const { q } = params;
     if (!q) {
