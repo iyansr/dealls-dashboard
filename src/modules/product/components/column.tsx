@@ -9,7 +9,7 @@ const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: 'brand',
-    header: 'Brand',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Brand" />,
   },
   {
     accessorKey: 'price',

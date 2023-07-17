@@ -45,6 +45,10 @@ const useQueryProducts = (params: RequestParams & { sort: SortingState }) => {
           return desc ? b.price - a.price : a.price - b.price;
         }
 
+        if (id === 'brand') {
+          return desc ? b.brand.localeCompare(a.brand) : a.brand.localeCompare(b.brand);
+        }
+
         if (id === 'stock') {
           return desc ? b.stock - a.stock : a.stock - b.stock;
         }
