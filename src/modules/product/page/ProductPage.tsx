@@ -4,7 +4,7 @@ import React, { Fragment } from 'react';
 import { LoaderIcon } from 'lucide-react';
 
 import TableInstance from '@/components/data-table/TableInstance';
-import { DataTablePagination } from '@/components/data-table/TablePagination';
+import { TableFilter } from '@/components/data-table/TablePagination';
 
 import columns from '../components/column';
 import TableToolbar from '../components/TableToolbar';
@@ -26,7 +26,7 @@ const ProductPage = () => {
     <Fragment>
       <TableToolbar table={table} />
       <TableInstance table={table} columnLength={columns.length} />
-      <DataTablePagination table={table} />
+      <TableFilter table={table} />
     </Fragment>
   );
 };

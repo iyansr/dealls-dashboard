@@ -3,10 +3,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Button } from '../ui/button';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 
-interface DataTablePaginationProps<TData> {
+interface TableFilterProps<TData> {
   table: Table<TData>;
 }
-export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
+export function TableFilter<TData>({ table }: TableFilterProps<TData>) {
   return (
     <div className="flex items-center justify-end px-2 mt-4">
       <div className="flex items-center space-x-6 lg:space-x-8">

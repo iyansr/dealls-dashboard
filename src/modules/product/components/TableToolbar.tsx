@@ -1,4 +1,4 @@
-import { DataTableFacetedFilter } from '@/components/data-table/TableFilter';
+import { TableFilter } from '@/components/data-table/TableFilter';
 import { Input } from '@/components/ui/input';
 import { Table } from '@tanstack/react-table';
 import React from 'react';
@@ -23,7 +23,7 @@ function TableToolbar<TData>({ table }: Props<TData>) {
         className="h-8 w-[150px] lg:w-[250px]"
       />
       {table.getColumn('category') && (
-        <DataTableFacetedFilter
+        <TableFilter
           column={table.getColumn('category')}
           title="Category"
           options={categories?.map(cat => ({ label: cat, value: cat })) || []}

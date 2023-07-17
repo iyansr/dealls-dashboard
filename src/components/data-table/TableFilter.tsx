@@ -17,7 +17,7 @@ import {
 } from '../ui/command';
 import { CheckIcon, PlusCircleIcon } from 'lucide-react';
 
-interface DataTableFacetedFilter<TData, TValue> {
+interface TableFilter<TData, TValue> {
   column?: Column<TData, TValue>;
   title?: string;
   options: {
@@ -27,11 +27,7 @@ interface DataTableFacetedFilter<TData, TValue> {
   }[];
 }
 
-export function DataTableFacetedFilter<TData, TValue>({
-  column,
-  title,
-  options,
-}: DataTableFacetedFilter<TData, TValue>) {
+export function TableFilter<TData, TValue>({ column, title, options }: TableFilter<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
 

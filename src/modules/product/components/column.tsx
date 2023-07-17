@@ -1,24 +1,24 @@
-import { DataTableColumnHeader } from '@/components/data-table/TableColumnHeader';
+import { TableColumnHeader } from '@/components/data-table/TableColumnHeader';
 import { Product } from '@/types/product';
 import { ColumnDef } from '@tanstack/react-table';
 
 const columns: ColumnDef<Product>[] = [
   {
     accessorKey: 'title',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Product Name" />,
+    header: ({ column }) => <TableColumnHeader column={column} title="Product Name" />,
   },
   {
     accessorKey: 'brand',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Brand" />,
+    header: ({ column }) => <TableColumnHeader column={column} title="Brand" />,
   },
   {
     accessorKey: 'price',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Price" />,
+    header: ({ column }) => <TableColumnHeader column={column} title="Price" />,
     cell: props => `$ ${props.getValue()}`,
   },
   {
     accessorKey: 'stock',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Stock" />,
+    header: ({ column }) => <TableColumnHeader column={column} title="Stock" />,
   },
   {
     accessorKey: 'category',
