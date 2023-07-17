@@ -18,7 +18,8 @@ const useQueryProducts = (params: RequestParams & { categories: string[] }) => {
   return useQuery(['products-filtered', params, data], {
     queryFn: async () => {
       const products = data?.products ?? [];
-      const total = products.length;
+
+      const productBrand = [...new Set(products.map(product => product.brand))];
 
       const queriedProducts = products.filter(product => {
         const { q } = params;
