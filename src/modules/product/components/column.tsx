@@ -6,7 +6,6 @@ const columns: ColumnDef<Product>[] = [
   {
     accessorKey: 'title',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Product Name" />,
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue('title')}</div>,
   },
   {
     accessorKey: 'brand',
@@ -14,12 +13,12 @@ const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: 'price',
-    header: 'Price',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Price" />,
     cell: props => `$ ${props.getValue()}`,
   },
   {
     accessorKey: 'stock',
-    header: 'Stock',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Stock" />,
   },
   {
     accessorKey: 'category',

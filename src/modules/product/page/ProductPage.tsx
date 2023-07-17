@@ -6,7 +6,12 @@ import { LoaderIcon } from 'lucide-react';
 import TableInstance from '@/components/data-table/TableInstance';
 import { DataTablePagination } from '@/components/data-table/TablePagination';
 import { Product } from '@/types/product';
-import { PaginationState, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import {
+  PaginationState,
+  SortingState,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 
 import useQueryProducts from '../hooks/useQueryProducts';
 import columns from '../components/column';
@@ -16,10 +21,12 @@ const ProductPage = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const { data, isLoading } = useQueryProducts({
     limit: pageSize,
     skip: pageIndex,
+    sort: sorting,
     q: '',
   });
 
@@ -32,9 +39,12 @@ const ProductPage = () => {
         pageIndex,
         pageSize,
       },
+      sorting,
     },
     onPaginationChange: setPagination,
+    onSortingChange: setSorting,
     manualPagination: true,
+    manualSorting: true,
     getCoreRowModel: getCoreRowModel(),
   });
 
