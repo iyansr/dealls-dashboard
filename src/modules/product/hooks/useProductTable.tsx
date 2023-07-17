@@ -24,6 +24,7 @@ const useProductTable = () => {
     sort: sorting,
     q: (columnFilters.find(filter => filter.id === 'title')?.value ?? '') as string,
     categories: (columnFilters.find(filter => filter.id === 'category')?.value ?? []) as string[],
+    brands: (columnFilters.find(filter => filter.id === 'brand')?.value ?? []) as string[],
   });
 
   const table = useReactTable<Product>({

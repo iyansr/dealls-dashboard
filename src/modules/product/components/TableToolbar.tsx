@@ -5,6 +5,7 @@ import React from 'react';
 import useQueryProductCategories from '../hooks/useQueryProductCategories';
 import { Button } from '@/components/ui/button';
 import { XIcon } from 'lucide-react';
+import useQueryProductBrand from '../hooks/useQueryProductBrand';
 
 type Props<TData> = {
   table: Table<TData>;
@@ -12,6 +13,8 @@ type Props<TData> = {
 
 function TableToolbar<TData>({ table }: Props<TData>) {
   const { data: categories } = useQueryProductCategories();
+  const { data: brands } = useQueryProductBrand();
+
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
@@ -27,6 +30,13 @@ function TableToolbar<TData>({ table }: Props<TData>) {
           column={table.getColumn('category')}
           title="Category"
           options={categories?.map(cat => ({ label: cat, value: cat })) || []}
+        />
+      )}
+      {table.getColumn('brand') && (
+        <TableFilter
+          column={table.getColumn('brand')}
+          title="Brand"
+          options={brands?.map(brand => ({ label: brand, value: brand })) || []}
         />
       )}
       {isFiltered && (
