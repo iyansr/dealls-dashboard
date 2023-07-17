@@ -1,11 +1,16 @@
 'use client';
 
 import TableInstance from '@/components/data-table/TableInstance';
+import { DataTablePagination } from '@/components/data-table/TablePagination';
 import { Product } from '@/types/product';
 import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import React from 'react';
+import useQueryProducts from '../hooks/useQueryProducts';
+import { LoaderIcon } from 'lucide-react';
 
-const ProductPage = ({ products }: { products: Product[] }) => {
+const ProductPage = () => {
+  const { data, isLoading } = useQueryProducts();
+
   const schema: ColumnDef<Product>[] = [
     {
       accessorKey: 'title',
@@ -31,17 +36,27 @@ const ProductPage = ({ products }: { products: Product[] }) => {
   ];
 
   const table = useReactTable<Product>({
-    data: products,
+    data: data?.products ?? [],
     columns: schema,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return (
-    <main className="p-6 mx-auto max-w-screen-2xl ml-72">
-      <div className="p-4 bg-white rounded-md">
-        <TableInstance table={table} />
+  // table.setState;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center flex-col justify-center">
+        <h3 className="text-lg font-semibold">Loading Data</h3>
+        <LoaderIcon size={32} className="animate-spin mt-4" />
       </div>
-    </main>
+    );
+  }
+
+  return (
+    <div>
+      <TableInstance table={table} />
+      <DataTablePagination table={table} />
+    </div>
   );
 };
 
