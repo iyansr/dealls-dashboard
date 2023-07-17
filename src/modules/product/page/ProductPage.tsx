@@ -1,47 +1,42 @@
 'use client';
 
+import React, { useState } from 'react';
+import { LoaderIcon } from 'lucide-react';
+
 import TableInstance from '@/components/data-table/TableInstance';
 import { DataTablePagination } from '@/components/data-table/TablePagination';
 import { Product } from '@/types/product';
-import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import React from 'react';
+import { PaginationState, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+
 import useQueryProducts from '../hooks/useQueryProducts';
-import { LoaderIcon } from 'lucide-react';
+import columns from '../components/column';
 
 const ProductPage = () => {
-  const { data, isLoading } = useQueryProducts();
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
-  const schema: ColumnDef<Product>[] = [
-    {
-      accessorKey: 'title',
-      header: 'Product Name',
-    },
-    {
-      accessorKey: 'brand',
-      header: 'Brand',
-    },
-    {
-      accessorKey: 'price',
-      header: 'Price',
-      cell: props => `$ ${props.getValue()}`,
-    },
-    {
-      accessorKey: 'stock',
-      header: 'Stock',
-    },
-    {
-      accessorKey: 'category',
-      header: 'Category',
-    },
-  ];
+  const { data, isLoading } = useQueryProducts({
+    limit: pageSize,
+    skip: pageIndex,
+    q: '',
+  });
 
   const table = useReactTable<Product>({
     data: data?.products ?? [],
-    columns: schema,
+    columns,
+    pageCount: Math.ceil((data?.total ?? 0) / pageSize),
+    state: {
+      pagination: {
+        pageIndex,
+        pageSize,
+      },
+    },
+    onPaginationChange: setPagination,
+    manualPagination: true,
     getCoreRowModel: getCoreRowModel(),
   });
-
-  // table.setState;
 
   if (isLoading) {
     return (

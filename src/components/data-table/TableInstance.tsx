@@ -16,6 +16,14 @@ type Props<T> = {
 };
 
 const TableInstance = <T extends Record<string, unknown>>({ table }: Props<T>) => {
+  if (table.getRowModel().rows.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-full">
+        <span className="mt-4 text-gray-500">No data found</span>
+      </div>
+    );
+  }
+
   return (
     <Table>
       <TableHeader>
