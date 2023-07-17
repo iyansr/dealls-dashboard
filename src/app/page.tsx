@@ -1,7 +1,11 @@
+import { getAllProducts } from '@/api/product';
 import Header from '@/components/basic/Header';
 import Sidebar from '@/components/basic/Sidebar';
+import ProductPage from '@/modules/product/page/ProductPage';
 
-export default function Home() {
+export default async function Home() {
+  const products = await getAllProducts();
+
   return (
     <div className="bg-slate-100 min-h-screen">
       <Sidebar />
@@ -9,18 +13,7 @@ export default function Home() {
         <Header />
       </div>
 
-      <main className="p-6 mx-auto max-w-screen-2xl ml-72">
-        <div className="p-4 bg-white rounded-md">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium quasi vero, odit
-            impedit fugit architecto blanditiis deserunt officia, sed, laborum omnis ipsam
-            laboriosam magnam ipsum temporibus neque quod itaque facere? Lorem ipsum dolor sit amet
-            consectetur adipisicing elit. Molestias placeat voluptatum fuga soluta, optio,
-            voluptatibus nesciunt repellat, provident libero numquam recusandae at? Illum esse
-            cumque saepe odio quis laboriosam molestias.
-          </p>
-        </div>
-      </main>
+      <ProductPage products={products.products} />
     </div>
   );
 }
