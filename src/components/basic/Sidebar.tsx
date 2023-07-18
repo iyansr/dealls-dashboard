@@ -22,10 +22,6 @@ const Sidebar = () => {
   return (
     <div className="flex h-screen flex-col justify-between border-e bg-white w-72 fixed inset-y-0 z-50 ">
       <div className="px-4 py-6">
-        <span className="grid h-10 w-32 place-content-center rounded-lg bg-slate-100 text-xs text-slate-600">
-          Logo
-        </span>
-
         <ul className="mt-6 space-y-1">
           {links.map(({ href, label }) => (
             <li key={label}>
