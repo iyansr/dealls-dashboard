@@ -3,7 +3,6 @@ import {
   PaginationState,
   SortingState,
   getCoreRowModel,
-  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
@@ -21,12 +20,13 @@ const useProductTable = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [sorting, setSorting] = useState<SortingState>(
-    JSON.parse(localStorage.getItem('sortState') || '[]'),
-  );
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-    JSON.parse(localStorage.getItem('filterState') || '[]'),
-  );
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+  useEffect(() => {
+    setSorting(JSON.parse(localStorage.getItem('sortState') || '[]'));
+    setColumnFilters(JSON.parse(localStorage.getItem('filterState') || '[]'));
+  }, []);
 
   useEffect(() => {
     saveFilterState({ filterState: columnFilters });
