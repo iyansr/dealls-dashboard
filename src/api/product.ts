@@ -18,6 +18,15 @@ export const getAllProducts: GetAllProducts = async (q: string) => {
   return response.data;
 };
 
+export const getDetailProduct = async (id: number) => {
+  const response = await axios.request<Product>({
+    method: 'GET',
+    url: `/products/${id}`,
+  });
+
+  return response.data;
+};
+
 export const getAllProductCategory = async () => {
   const response = await axios.request<string[]>({
     method: 'GET',

@@ -8,7 +8,7 @@ export const listCartColumn: ColumnDef<Cart>[] = [
     header: "User's Name",
     cell: props => {
       return (
-        <Link href={`/carts/${props.row.original.userId}`} className="underline text-blue-500">
+        <Link href={`/carts/${props.row.original.id}`} className="underline text-blue-500">
           {props.getValue() as string}
         </Link>
       );

@@ -15,3 +15,12 @@ export const getAllCarts = async (params: RequestParams) => {
 
   return response.data;
 };
+
+export const getDetailCart = async (id: number) => {
+  const response = await axios.request<Cart>({
+    method: 'GET',
+    url: `/carts/${id}`,
+  });
+
+  return response.data;
+};
