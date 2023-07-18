@@ -16,13 +16,13 @@ export const useQueryFetchProducts = (q: string) => {
 const useQueryProducts = (
   params: RequestParams & { categories: string[]; brands: string[]; priceRange: string },
 ) => {
-  const { data } = useQueryFetchProducts(params.q);
+  const { data } = useQueryFetchProducts(params.q!);
 
   const products = data?.products ?? [];
 
   const sortedProducts = useMemo(() => {
     return products.sort((a, b) => {
-      const sort = params.sort[0];
+      const sort = params!.sort![0];
 
       if (!sort) {
         return 0;
