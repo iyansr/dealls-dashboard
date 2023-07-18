@@ -20,9 +20,40 @@ const useQueryProducts = (
 
   const products = data?.products ?? [];
 
+  const productByPriceRange = useMemo(() => {
+    return products.filter(product => {
+      const { priceRange } = params;
+      if (!priceRange) {
+        return true;
+      }
+      const [min, max] = priceRange.split('-');
+      return product.price >= Number(min) && product.price <= Number(max);
+    });
+  }, [params.priceRange, products]);
+
+  const productByCategories = useMemo(() => {
+    return productByPriceRange.filter(product => {
+      const { categories } = params;
+      if (!categories.length) {
+        return true;
+      }
+      return categories.includes(product.category);
+    });
+  }, [params.categories, productByPriceRange]);
+
+  const productByBrand = useMemo(() => {
+    return productByCategories.filter(product => {
+      const { brands } = params;
+      if (!brands.length) {
+        return true;
+      }
+      return brands.includes(product.brand);
+    });
+  }, [params.brands, productByCategories]);
+
   const sortedProducts = useMemo(() => {
-    return products.sort((a, b) => {
-      const sort = params!.sort![0];
+    return productByBrand.sort((a, b) => {
+      const sort = params.sort![0];
 
       if (!sort) {
         return 0;
@@ -46,44 +77,13 @@ const useQueryProducts = (
 
       return 0;
     });
-  }, [params.sort, products]);
-
-  const productByPriceRange = useMemo(() => {
-    return sortedProducts.filter(product => {
-      const { priceRange } = params;
-      if (!priceRange) {
-        return true;
-      }
-      const [min, max] = priceRange.split('-');
-      return product.price >= Number(min) && product.price <= Number(max);
-    });
-  }, [params.priceRange, sortedProducts]);
-
-  const productByCategories = useMemo(() => {
-    return productByPriceRange.filter(product => {
-      const { categories } = params;
-      if (!categories.length) {
-        return true;
-      }
-      return categories.includes(product.category);
-    });
-  }, [params.categories, productByPriceRange]);
-
-  const productByBrand = useMemo(() => {
-    return productByCategories.filter(product => {
-      const { brands } = params;
-      if (!brands.length) {
-        return true;
-      }
-      return brands.includes(product.brand);
-    });
-  }, [params.brands, productByCategories]);
+  }, [params.sort, productByBrand]);
 
   const startIndex = params.pageNumber * params.pageSize;
   const endIndex = startIndex + params.pageSize;
   const totalPages = Math.ceil(productByBrand.length / params.pageSize);
 
-  const finalProducts = productByBrand.slice(startIndex, endIndex);
+  const finalProducts = sortedProducts.slice(startIndex, endIndex);
 
   return useQuery(['products-filtered', params, data], {
     queryFn: () => {
