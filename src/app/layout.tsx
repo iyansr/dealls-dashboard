@@ -19,10 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Provider>
           <div className="bg-slate-100 min-h-screen">
             <Sidebar />
-            <div className="ml-72">
+            <div className="md:ml-72">
               <Header />
             </div>
-            <main className="p-6 mx-auto max-w-screen-2xl ml-72">
+            <main className="p-6 mx-auto max-w-screen-2xl md:ml-72">
               <div className="p-4 bg-white rounded-md w-full">{children}</div>
             </main>
           </div>
