@@ -3,10 +3,10 @@ import { RequestParams } from '@/types/request';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-export const useQueryFetchProducts = () => {
-  return useQuery(['products'], {
+export const useQueryFetchProducts = (q: string) => {
+  return useQuery(['products', q], {
     queryFn: async () => {
-      const response = await getAllProducts();
+      const response = await getAllProducts(q);
       return response;
     },
     keepPreviousData: true,
@@ -16,20 +16,12 @@ export const useQueryFetchProducts = () => {
 const useQueryProducts = (
   params: RequestParams & { categories: string[]; brands: string[]; priceRange: string },
 ) => {
-  const { data } = useQueryFetchProducts();
+  const { data } = useQueryFetchProducts(params.q);
 
   const products = data?.products ?? [];
 
-  const queriedProducts = products.filter(product => {
-    const { q } = params;
-    if (!q) {
-      return true;
-    }
-    return product.title.toLowerCase().includes(q.toLowerCase());
-  });
-
   const sortedProducts = useMemo(() => {
-    return queriedProducts.sort((a, b) => {
+    return products.sort((a, b) => {
       const sort = params.sort[0];
 
       if (!sort) {
@@ -54,7 +46,7 @@ const useQueryProducts = (
 
       return 0;
     });
-  }, [params.sort, queriedProducts]);
+  }, [params.sort, products]);
 
   const productByPriceRange = useMemo(() => {
     return sortedProducts.filter(product => {

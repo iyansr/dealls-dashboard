@@ -2,15 +2,16 @@ import axios from '@/lib/axios';
 import { Product } from '@/types/product';
 import { GeneralListResponse } from '@/types/response';
 
-type GetAllProducts = () => Promise<GeneralListResponse<Product, 'products'>>;
+type GetAllProducts = (q: string) => Promise<GeneralListResponse<Product, 'products'>>;
 
-export const getAllProducts: GetAllProducts = async () => {
+export const getAllProducts: GetAllProducts = async (q: string) => {
   const response = await axios.request<GeneralListResponse<Product, 'products'>>({
     method: 'GET',
-    url: '/products',
+    url: '/products/search',
     params: {
       limit: 100,
       skip: 0,
+      q,
     },
   });
 
