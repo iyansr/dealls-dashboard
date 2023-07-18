@@ -6,6 +6,7 @@ const columns: ColumnDef<Product>[] = [
   {
     accessorKey: 'title',
     header: ({ column }) => <TableColumnHeader column={column} title="Product Name" />,
+    cell: ({ row }) => <div className="w-[200px]">{row.getValue('title')}</div>,
   },
   {
     accessorKey: 'brand',

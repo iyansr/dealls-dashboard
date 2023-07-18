@@ -4,7 +4,7 @@ import TableInstance from '@/components/data-table/TableInstance';
 import { TablePagination } from '@/components/data-table/TablePagination';
 import React, { Fragment } from 'react';
 import { LoaderIcon } from 'lucide-react';
-import { listCartColumn } from '@/modules/components/listCartColumn';
+import { listCartColumn } from '@/modules/cart/components/listCartColumn';
 import useCartsTable from '../hooks/useCartsTable';
 
 const CartPage = () => {

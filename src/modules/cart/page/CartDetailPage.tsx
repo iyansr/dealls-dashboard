@@ -3,42 +3,15 @@
 import { LoaderIcon } from 'lucide-react';
 import React from 'react';
 import { useQueryDetailCart } from '../hooks/useQueryDetailCart';
-import { useParams, useRouter } from 'next/navigation';
-import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { useParams } from 'next/navigation';
+import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { ProductCart } from '@/types/chart';
 import TableInstance from '@/components/data-table/TableInstance';
+import { cartColumns } from '../components/cartDetailColumn';
 
 const CartDetailPage = () => {
   const params = useParams();
   const { data, isLoading } = useQueryDetailCart(params.id as unknown as number);
-
-  const cartColumns: ColumnDef<ProductCart>[] = [
-    {
-      accessorKey: 'title',
-      header: 'Product Name',
-    },
-    {
-      accessorKey: 'brand',
-      header: 'Brand',
-    },
-    {
-      accessorKey: 'price',
-      header: 'Price',
-      cell: props => `$ ${props.getValue()}`,
-    },
-    {
-      accessorKey: 'quantity',
-      header: 'Quantity',
-    },
-    {
-      accessorKey: 'stock',
-      header: 'Stock',
-    },
-    {
-      accessorKey: 'category',
-      header: 'Category',
-    },
-  ];
 
   const table = useReactTable<ProductCart>({
     data: data?.products ?? [],

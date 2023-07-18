@@ -1,4 +1,4 @@
-import { listCartColumn } from '@/modules/components/listCartColumn';
+import { listCartColumn } from '@/modules/cart/components/listCartColumn';
 import { PaginationState, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { useState } from 'react';
 import { useQueryFetchCarts } from './useQueryCarts';
