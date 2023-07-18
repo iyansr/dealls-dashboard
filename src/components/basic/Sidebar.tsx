@@ -1,7 +1,24 @@
+'use client';
+
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
+const links = [
+  {
+    href: '/',
+    label: 'Products',
+  },
+  {
+    href: '/carts',
+    label: 'Carts',
+  },
+];
+
 const Sidebar = () => {
+  const pathName = usePathname();
+
   return (
     <div className="flex h-screen flex-col justify-between border-e bg-white w-72 fixed inset-y-0 z-50 ">
       <div className="px-4 py-6">
@@ -10,13 +27,17 @@ const Sidebar = () => {
         </span>
 
         <ul className="mt-6 space-y-1">
-          <li>
-            <Link
-              href="#!"
-              className="block rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700">
-              General
-            </Link>
-          </li>
+          {links.map(({ href, label }) => (
+            <li key={label}>
+              <Link
+                href={href}
+                className={cn('block rounded-lg px-4 py-2 text-sm font-medium text-slate-700', {
+                  'bg-slate-100': pathName === href,
+                })}>
+                {label}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
 
