@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Header />
             </div>
             <main className="p-6 mx-auto max-w-screen-2xl ml-72">
-              <div className="p-4 bg-white rounded-md">{children}</div>
+              <div className="p-4 bg-white rounded-md w-full">{children}</div>
             </main>
           </div>
         </Provider>

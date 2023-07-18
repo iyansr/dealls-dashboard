@@ -13,7 +13,9 @@ export const useQueryFetchProducts = () => {
   });
 };
 
-const useQueryProducts = (params: RequestParams & { categories: string[]; brands: string[] }) => {
+const useQueryProducts = (
+  params: RequestParams & { categories: string[]; brands: string[]; priceRange: string },
+) => {
   const { data } = useQueryFetchProducts();
 
   const products = data?.products ?? [];
@@ -54,15 +56,26 @@ const useQueryProducts = (params: RequestParams & { categories: string[]; brands
     });
   }, [params.sort, queriedProducts]);
 
-  const productByCategories = useMemo(() => {
+  const productByPriceRange = useMemo(() => {
     return sortedProducts.filter(product => {
+      const { priceRange } = params;
+      if (!priceRange) {
+        return true;
+      }
+      const [min, max] = priceRange.split('-');
+      return product.price >= Number(min) && product.price <= Number(max);
+    });
+  }, [params.priceRange, sortedProducts]);
+
+  const productByCategories = useMemo(() => {
+    return productByPriceRange.filter(product => {
       const { categories } = params;
       if (!categories.length) {
         return true;
       }
       return categories.includes(product.category);
     });
-  }, [params.categories, sortedProducts]);
+  }, [params.categories, productByPriceRange]);
 
   const productByBrand = useMemo(() => {
     return productByCategories.filter(product => {
